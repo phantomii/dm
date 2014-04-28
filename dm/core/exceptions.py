@@ -33,3 +33,22 @@ class DmException(Exception):
 
     def __repr__(self):
         return "Message: %s" % self.msg
+
+
+class PropertyRequired(DmException, ValueError):
+
+    message = "Value is required! Property should not be None value."
+
+
+class ReadOnlyProperty(DmException, ValueError):
+
+    message = "Property is read only!"
+
+
+class TypeError(DmException, TypeError):
+
+    message = "Invalid type value '%(value)s' for '%(property_type)s'"
+
+    def __init__(self, value, property_type):
+        super(TypeError, self).__init__(
+            value=value, property_type=type(property_type).__name__)
