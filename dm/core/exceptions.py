@@ -50,5 +50,26 @@ class TypeError(DmException, TypeError):
     message = "Invalid type value '%(value)s' for '%(property_type)s'"
 
     def __init__(self, value, property_type):
+        self._value = value
+        self._property_type = property_type
         super(TypeError, self).__init__(
             value=value, property_type=type(property_type).__name__)
+
+    def get_value(self):
+        return self._value
+
+    def get_property_type(self):
+        return self._property_type
+
+
+class ModelTypeError(TypeError):
+
+    message = ("Invalid type value '%(value)s'(%(value_type)s) for "
+               "'%(model_name)s.%(property_name)s'(%(property_type)s)")
+
+    def __init__(self, value, property_name, property_type, model):
+        super(TypeError, self).__init__(
+            value=value, value_type=type(value),
+            property_type=type(property_type).__name__,
+            model_name=type(model).__name__,
+            property_name=property_name)
